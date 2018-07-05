@@ -1,1 +1,80 @@
-Hi
+
+<!DOCTYPE html>
+<HTML>
+  <HEAD>
+    <TITLE>Issues</TITLE>
+    <link rel="icon" href="./icon.jpg" />
+    <link rel="stylesheet" href="./style.css" />
+    <meta charset="utf-8"/>
+  </HEAD>
+  
+  <BODY>
+    <h1>Introduction</h1>
+    <p>
+      I was hired to "document and resolve the security and privacy issues in
+      a working Node.js + Express + MongoDB web application" which may be
+      found
+      <a href="https://jordan-marsh.herokuapp.com/entry.html">here</a>
+      . It is a website and server that lets user login with a name, latitude,
+      and longitude and allows other users to check on the data
+      <a href="https://jordan-marsh.herokuapp.com/">here</a>
+      .      
+    </p>
+
+    <h1>Methodology</h1>
+    <p>
+      I conducted black-box testing with the Burp Suite tool.
+    </p>
+
+    <h1>Abstract Findings</h1>
+    <p>
+      I found that the service not checking user input allows malicious actors
+      to affect other user's experiences with the site including popups,
+      images, and videos. 
+    </p>
+
+    <h1>Issues Found</h1>
+    <h3>Cross-Site Scripting</h3>
+    <p>Issue: Cross-Site Scripting</p>
+    <p>Location: https://jordan-marsh.herokuapp.com/entry.html</p>
+    <p>
+      Severity: This is a high severity issue because it allows tampering
+      with other user's experiences.</p>
+    <p>Examples and Evidence: </p>
+    <img src="./ex_code.jpg" alt ="" height="500" width="500"/> 
+    <img src="./ex_popup.jpg" alt ="" height="500" width="500"/> 
+    <img src="./ex_main.jpg" alt ="" height="500" width="500"/>
+    <p>
+      I found this issue by intercepting data with Burp Suite and modifying data to
+      hold HTML code that held Javascript code. Examples of possibly inserted code:
+    </p>
+    <xmp>
+      <script>alert('You done gone and got hacked boi.');</script>
+    </xmp>
+    <p>
+      Resolution: Just as the user's latitude and longitude are validated, the user's
+      login should be validated to make sure that it does not contain harmful code.
+      Example of how to do this: 
+    </p>
+    <xmp>
+      function bad( login) {
+          if(login.indexOf('<') > -1) {
+              return true;
+          }
+	  if(login.indexOf('>') > -1) {
+              return true;
+          }
+          return false;
+      }
+    </xmp>
+    
+    <h1>Conclusion</h1>
+    <p>
+      Beyond previous suggestions, I would also suggest that application
+      uses the browser's information for latitude and longitude so that a
+      user can not lie about their position via the online form.
+      Making the recommended change should take no more than 15 minutes
+      and cost no more than $25.
+    </p>
+  </BODY>
+</HTML>
